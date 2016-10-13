@@ -7,18 +7,24 @@ CPP_INCLUDES = -I/usr/local/include -I/usr/include/triclops/ -I/usr/include/flyc
 CPP_FLAGS = $(CPP_COMP_FLAGS) $(CPP_INCLUDES)
 LINK_FLAGS=-lm -lstdc++ -lpthread -ldl -lm $(CLIBS)
 
-TARGET = bum
-SRCS =
 
 INC =
-
-OBJS = CameraKinect.o CameraOpenNI.o main.o
-
-$(TARGET):$(OBJS)
+DIR_SRC = .
+DIR_OBJ = ./obj
+DIR = $(notdir $(SRC))
+SRC = $(wildcard $(DIR_SRC)/*.cpp)
+OBJ = $(patsubst %.cpp, $(DIR_OBJ)/%.o, $(notdir $(SRC)))
+TARGET = ${DIR_OBJ}/bum
+#OBJS = CameraKinect.o CameraOpenNI.o main.o
+#all:
+#	@echo $(SRC)
+#	@echo $(OBJ)
+#
+$(TARGET):$(OBJ)
 	$(CC) -o $@ $^ $(LINK_FLAGS)
 
-%.o:%.cpp
+${DIR_OBJ}/%.o:%.cpp
 	$(CC) $(CPP_FLAGS) $(INC) -o $@ -c $<
 
 clean:
-	rm *.o bum
+	rm ./obj/*.o ./obj/bum
