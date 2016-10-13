@@ -28,11 +28,11 @@ public:
     virtual ~Camera(){};
 
     template<typename T, typename... Ts>
-        static auto makeCamera(Ts&&... params){
-            std::unique_ptr<Camera> cInv(nullptr);
-            cInv.reset(new T(std::forward<Ts>(params)...));
-            return cInv;
-        }
+    static auto makeCamera(Ts&&... params){
+        std::unique_ptr<Camera> cInv(nullptr);
+        cInv.reset(new T(std::forward<Ts>(params)...));
+        return cInv;
+    }
     virtual bool init() = 0;
     virtual bool isCalibrated() const = 0;
     virtual int getSerial() const = 0;
