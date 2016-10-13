@@ -23,9 +23,9 @@ CameraKinect::CameraKinect() :
     dev_(0),
     listener_(0),
     reg_(0){
-    freenect2_ = new libfreenect2::Freenect2();
-    listener_ = new libfreenect2::SyncMultiFrameListener(libfreenect2::Frame::Color  | libfreenect2::Frame::Depth);
-}
+        freenect2_ = new libfreenect2::Freenect2();
+        listener_ = new libfreenect2::SyncMultiFrameListener(libfreenect2::Frame::Color  | libfreenect2::Frame::Depth);
+    }
 CameraKinect::~CameraKinect(){
     if(dev_){
         dev_->stop();

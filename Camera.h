@@ -25,34 +25,34 @@
 class Camera
 {
 public:
-	virtual ~Camera(){};
+    virtual ~Camera(){};
 
     template<typename T, typename... Ts>
-    static auto makeCamera(Ts&&... params){
-        std::unique_ptr<Camera> cInv(nullptr);
-        cInv.reset(new T(std::forward<Ts>(params)...));
-        return cInv;
-    }
-	virtual bool init() = 0;
-	virtual bool isCalibrated() const = 0;
-	virtual int getSerial() const = 0;
+        static auto makeCamera(Ts&&... params){
+            std::unique_ptr<Camera> cInv(nullptr);
+            cInv.reset(new T(std::forward<Ts>(params)...));
+            return cInv;
+        }
+    virtual bool init() = 0;
+    virtual bool isCalibrated() const = 0;
+    virtual int getSerial() const = 0;
 
-	//getters
-	//const Transform& getLocalTransform() const {return _localTransform;}
+    //getters
+    //const Transform& getLocalTransform() const {return _localTransform;}
 
-	//setters
-	//void setLocalTransform(const Transform& localTransform) {_localTransform = localTransform;}
-	virtual bool capture(cv::Mat&) = 0;
+    //setters
+    //void setLocalTransform(const Transform& localTransform) {_localTransform = localTransform;}
+    virtual bool capture(cv::Mat&) = 0;
     virtual bool capture(pcl::PointCloud<pcl::PointXYZRGB>&) = 0;
     virtual bool capture(pcl::PointCloud<pcl::PointXYZRGB>&, cv::Mat&) = 0;
 
 protected:
-	//Camera(float imageRate = 0, const Transform& localTransform = Transform::getIdentity());
+    //Camera(float imageRate = 0, const Transform& localTransform = Transform::getIdentity());
     Camera():_seq(0){}
-	int getNextSeqID() {return ++_seq;}
+    int getNextSeqID() {return ++_seq;}
 
 private:
-	//Transform _localTransform;
+    //Transform _localTransform;
     int _seq;
 };
 

@@ -21,96 +21,96 @@
 CameraBumblebee::CameraBumblebee():
     _camera(0),
     _triclopsCtx(0){
-    _camera = new FlyCapture2::Camera();
-}
+        _camera = new FlyCapture2::Camera();
+    }
 CameraBumblebee::~CameraBumblebee(){
     // Close the camera
-	_camera->StopCapture();
-	_camera->Disconnect();
-	// Destroy the Triclops context
-	triclopsDestroyContext(_triclopsCtx);
-	delete _camera;
+    _camera->StopCapture();
+    _camera->Disconnect();
+    // Destroy the Triclops context
+    triclopsDestroyContext(_triclopsCtx);
+    delete _camera;
 }
 //CameraBumblebee& CameraBumblebee::getInstance(){
-    //static CameraBumblebee _instance;
-    //return _instance;
+//static CameraBumblebee _instance;
+//return _instance;
 //}
 bool CameraBumblebee::init(){
     if(_camera)
-	{
-		// Close the camera
-		_camera->StopCapture();
-		_camera->Disconnect();
-	}
-	if(_triclopsCtx)
-	{
-		triclopsDestroyContext(_triclopsCtx);
-		_triclopsCtx = 0;
-	}
+    {
+        // Close the camera
+        _camera->StopCapture();
+        _camera->Disconnect();
+    }
+    if(_triclopsCtx)
+    {
+        triclopsDestroyContext(_triclopsCtx);
+        _triclopsCtx = 0;
+    }
 
-	// connect camera
-	FlyCapture2::Error fc2Error = _camera->Connect();
-	if(fc2Error != FlyCapture2::PGRERROR_OK)
-	{
-		UERROR("Failed to connect the camera.");
-		return false;
-	}
+    // connect camera
+    FlyCapture2::Error fc2Error = _camera->Connect();
+    if(fc2Error != FlyCapture2::PGRERROR_OK)
+    {
+        UERROR("Failed to connect the camera.");
+        return false;
+    }
 
-	// configure camera
-	Fc2Triclops::StereoCameraMode mode = Fc2Triclops::TWO_CAMERA;
-	if(Fc2Triclops::setStereoMode(*_camera, mode))
-	{
-		UERROR("Failed to set stereo mode.");
-		return false;
-	}
+    // configure camera
+    Fc2Triclops::StereoCameraMode mode = Fc2Triclops::TWO_CAMERA;
+    if(Fc2Triclops::setStereoMode(*_camera, mode))
+    {
+        UERROR("Failed to set stereo mode.");
+        return false;
+    }
 
-	// generate the Triclops context
-	FlyCapture2::CameraInfo camInfo;
-	if(_camera->GetCameraInfo(&camInfo) != FlyCapture2::PGRERROR_OK)
-	{
-		UERROR("Failed to get camera info.");
-		return false;
-	}
+    // generate the Triclops context
+    FlyCapture2::CameraInfo camInfo;
+    if(_camera->GetCameraInfo(&camInfo) != FlyCapture2::PGRERROR_OK)
+    {
+        UERROR("Failed to get camera info.");
+        return false;
+    }
 
-	// Get calibration from th camera
-	if(Fc2Triclops::getContextFromCamera(camInfo.serialNumber, &_triclopsCtx))
-	{
-		UERROR("Failed to get calibration from the camera.");
-		return false;
-	}
+    // Get calibration from th camera
+    if(Fc2Triclops::getContextFromCamera(camInfo.serialNumber, &_triclopsCtx))
+    {
+        UERROR("Failed to get calibration from the camera.");
+        return false;
+    }
 
-	triclopsSetCameraConfiguration(_triclopsCtx, TriCfg_2CAM_HORIZONTAL);
-	triclopsSetResolutionAndPrepare(_triclopsCtx, HEIGHT, WIDTH, HEIGHT, WIDTH);
-	if(_camera->StartCapture() != FlyCapture2::PGRERROR_OK)
-	{
-		UERROR("Failed to start capture.");
-		return false;
-	}
+    triclopsSetCameraConfiguration(_triclopsCtx, TriCfg_2CAM_HORIZONTAL);
+    triclopsSetResolutionAndPrepare(_triclopsCtx, HEIGHT, WIDTH, HEIGHT, WIDTH);
+    if(_camera->StartCapture() != FlyCapture2::PGRERROR_OK)
+    {
+        UERROR("Failed to start capture.");
+        return false;
+    }
 
-	return true;
+    return true;
 }
 
 bool CameraBumblebee::isCalibrated() const{
     if(_triclopsCtx)
-	{
-		float fx, cx, cy, baseline;
-		triclopsGetFocalLength(_triclopsCtx, &fx);
-		triclopsGetImageCenter(_triclopsCtx, &cy, &cx);
-		triclopsGetBaseline(_triclopsCtx, &baseline);
-		return fx > 0.0f && cx > 0.0f && cy > 0.0f && baseline > 0.0f;
+    {
+        float fx, cx, cy, baseline;
+        triclopsGetFocalLength(_triclopsCtx, &fx);
+        triclopsGetImageCenter(_triclopsCtx, &cy, &cx);
+        triclopsGetBaseline(_triclopsCtx, &baseline);
+        return fx > 0.0f && cx > 0.0f && cy > 0.0f && baseline > 0.0f;
     }
     return false;
 }
 
 int CameraBumblebee::getSerial() const{
-	if(_camera && _camera->IsConnected())
-	{
-		FlyCapture2::CameraInfo camInfo;
-		if(_camera->GetCameraInfo(&camInfo) == FlyCapture2::PGRERROR_OK)
-		{
-			return camInfo.serialNumber;
-		}
-	}
+    if(_camera && _camera->IsConnected())
+    {
+        FlyCapture2::CameraInfo camInfo;
+        if(_camera->GetCameraInfo(&camInfo) == FlyCapture2::PGRERROR_OK)
+        {
+            return camInfo.serialNumber;
+        }
+    }
     return -1;
 }
 
@@ -134,7 +134,7 @@ bool CameraBumblebee::grabImage(
                 grabbedImage,
                 true /*assume little endian*/,
                 unprocessedImg[RIGHT] /* right */,
-				unprocessedImg[LEFT] /* left */) != Fc2Triclops::ERRORTYPE_OK){
+                unprocessedImg[LEFT] /* left */) != Fc2Triclops::ERRORTYPE_OK){
         UERROR("Can not unpack image");
         return false;
     }
@@ -158,9 +158,9 @@ bool CameraBumblebee::grabImage(
     }
     FlyCapture2::Image packedColorImage;
     fc2terr = Fc2Triclops::packTwoSideBySideRgbImage(
-        bgruImg[RIGHT],
-        bgruImg[LEFT],
-        packedColorImage);
+            bgruImg[RIGHT],
+            bgruImg[LEFT],
+            packedColorImage);
     if(fc2terr != Fc2Triclops::ERRORTYPE_OK){
         return false;
     }
@@ -208,7 +208,7 @@ bool CameraBumblebee::grabImage(
     //triclopsRectify(_triclopsCtx, const_cast<TriclopsInput *>(&triclopsMonoInput));
     //triclopsStereo(_triclopsCtx);
     return true;
- }
+}
 
 void CameraBumblebee::generate3DPoints(pcl::PointCloud<pcl::PointXYZRGB>& _cloud,
         cv::Mat& colorImage){

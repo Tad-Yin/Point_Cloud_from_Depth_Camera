@@ -48,7 +48,7 @@ public:
 private:
     struct ImageContainer
     {
-	    FlyCapture2::Image mono[2];
+        FlyCapture2::Image mono[2];
         FlyCapture2::Image unprocessed[2];
         FlyCapture2::Image bgru[2];
     };

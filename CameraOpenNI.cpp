@@ -21,7 +21,7 @@
 CameraOpenNI::CameraOpenNI() :
     _interface(0),
     _depthConstant(0.0f){
-}
+    }
 
 CameraOpenNI::~CameraOpenNI(){
     if(_connection.connected()) _connection.disconnect();

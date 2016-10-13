@@ -41,9 +41,9 @@ public:
     virtual bool capture(pcl::PointCloud<pcl::PointXYZRGB>&, cv::Mat&){return false;};
 private:
     libfreenect2::Freenect2 * freenect2_;
-	libfreenect2::Freenect2Device *dev_;
-	libfreenect2::SyncMultiFrameListener * listener_;
-	libfreenect2::Registration * reg_;
+    libfreenect2::Freenect2Device *dev_;
+    libfreenect2::SyncMultiFrameListener * listener_;
+    libfreenect2::Registration * reg_;
 
     template<class K, class V>
     inline V uValue(const std::map<K, V> & m, const K & key, const V & defaultValue = V())

@@ -52,15 +52,15 @@ class UScopeMutex{
 public:
     UScopeMutex(const UMutex& mutex):
         _mutex(mutex){
-        _mutex.lock();
-    }
+            _mutex.lock();
+        }
     UScopeMutex(UMutex* mutex):
         _mutex(*mutex){
-        _mutex.lock();
-    }
+            _mutex.lock();
+        }
     //UScopeMutex(UMutex& mutex):
-        //_mutex(mutex){
-        //_mutex.lock();
+    //_mutex(mutex){
+    //_mutex.lock();
     //}
     ~UScopeMutex(){
         _mutex.unlock();
